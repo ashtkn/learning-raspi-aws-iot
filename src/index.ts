@@ -1,8 +1,22 @@
-import hi from './hi'
+import gpio from 'rpi-gpio'
 
-const hello = (name: string): string => {
-  return `Hello, ${name}!`
+const main = () => {
+  const pin = 8
+  let isOn = false
+  gpio.setup(pin, gpio.DIR_OUT, () => {
+    console.log('Setup finished')
+    setInterval(() => {
+      if (isOn) {
+        console.log('LED is ON')
+        gpio.write(pin, true)
+        isOn = false
+      } else {
+        console.log('LED is OFF')
+        gpio.write(pin, false)
+        isOn = true
+      }
+    }, 1000)
+  })
 }
 
-console.log(hello('Taro'))
-console.log(hi('Jiro'))
+main()

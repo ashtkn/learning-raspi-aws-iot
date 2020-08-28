@@ -2,9 +2,29 @@
   "name": "led-example",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node src/index.ts",
+    "dev:watch": "ts-node-dev --respawn src/index.ts",
+    "tsc": "tsc",
+    "build": "npm-run-all clean tsc",
+    "start": "node .",
+    "lint": "eslint --ext .js,.ts --ignore-path .gitignore src",
+    "format": "prettier --write 'src/**/*.{js,ts}'",
+    "clean": "rimraf dist/*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,html,json}": [
+      "prettier --write 'src/**/*.{js,ts}'"
+    ],
+    "src/**/*.{js,ts}": [
+      "eslint --ext .js,.ts --ignore-path .gitignore src"
+    ]
   },
   "author": "Asahi Takenouchi",
   "license": "ISC",
@@ -22,5 +42,9 @@
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.0.0-pre.61",
     "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "@types/rpi-gpio": "^2.1.1",
+    "rpi-gpio": "^2.1.7"
   }
 }
